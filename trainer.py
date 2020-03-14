@@ -272,6 +272,11 @@ class Trainer(object):
     ##
 
     ##Sampling and figure methods
+    def sample_images(self):
+        self.causal_sampling([8,16])
+        self.label_interpolation()
+        self.sample_diversity()
+
     def label_interpolation(self,inputs=None,save_dir=None,ext='.pdf'):
         '''
         Holding all other inputs the same, move a causal controller
@@ -316,14 +321,14 @@ class Trainer(object):
 
         img_shape must have rows divisible by 2
 
-        This function implements the following three sampling techniques: 
-        1) Images where 
+        This function implements the following three sampling techniques:
+        1) Images where
             Top half is sampled from the intervention do(label=1)
             Bottom half is sampled from the intervention do(label=0)
         2) Images where
             Top half is sampled from the intervention do(label=1/0)
             Bottom half is sampled conditioned on |label = 1/0
-        3) Image where 
+        3) Image where
             Top half is sampled conditioned on |label = 1
             Bottom half is sampled conditioned on |label = 0
         '''
@@ -419,4 +424,3 @@ class Trainer(object):
         save_path=save_name.format(step)
         save_image(images, save_path, nrow=nrow)
         print("[*] Diversity Sample saved: {}".format(save_path))
-

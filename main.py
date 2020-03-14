@@ -82,7 +82,7 @@ def main(trainer):
     if trainer.model_config:
         if trainer.model_config.is_train:
             trainer.train_loop()
-
+        trainer.sample_images()
 if __name__ == "__main__":
     trainer=get_trainer()
 

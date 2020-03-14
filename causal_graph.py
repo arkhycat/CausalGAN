@@ -230,6 +230,105 @@ causal_graphs={
     ],
 
 
+'partial_big_causal_graph_1':[
+        ['Young',[]],
+        ['Male',[]],
+        ['Eyeglasses',['Young']],
+        ['Bald',            ['Male','Young']],
+        ['Mustache',        ['Male','Young']],
+        ['Smiling',         []],
+        ['Wearing_Lipstick',['Male','Young']],
+        ['Mouth_Slightly_Open',['Young','Smiling']],
+        ['Narrow_Eyes',        ['Male','Young','Smiling']],
+    ],
+
+'partial_big_causal_graph_2':[
+        ['Young',[]],
+        ['Male',[]],
+        ['Eyeglasses',['Young']],
+        ['Bald',            ['Male','Young']],
+        ['Mustache',        ['Male','Young']],
+        ['Smiling',         ['Male','Young']],
+        ['Wearing_Lipstick',['Male','Young']],
+        ['Mouth_Slightly_Open',[]],
+        ['Narrow_Eyes',        ['Male','Young','Smiling']],
+    ],
+
+'partial_big_causal_graph_3':[
+        ['Young',[]],
+        ['Male',[]],
+        ['Eyeglasses',['Young']],
+        ['Bald',            ['Male','Young']],
+        ['Mustache',        ['Male','Young']],
+        ['Smiling',         ['Male','Young']],
+        ['Wearing_Lipstick',['Male','Young']],
+        ['Mouth_Slightly_Open',['Young']],
+        ['Narrow_Eyes',        ['Male','Young','Smiling']],
+    ],
+
+'partial_big_causal_graph_4':[
+        ['Young',[]],
+        ['Male',[]],
+        ['Eyeglasses',['Young']],
+        ['Bald',            ['Male','Young']],
+        ['Mustache',        ['Male','Young']],
+        ['Smiling',         ['Male','Young']],
+        ['Wearing_Lipstick',['Male','Young']],
+        ['Mouth_Slightly_Open',['Smiling']],
+        ['Narrow_Eyes',        ['Male','Young','Smiling']],
+    ],
+
+'partial_big_causal_graph_5':[
+        ['Young',[]],
+        ['Male',[]],
+        ['Eyeglasses',['Young']],
+        ['Bald',            ['Male','Young']],
+        ['Mustache',        ['Male','Young']],
+        ['Smiling',         ['Male']],
+        ['Wearing_Lipstick',['Male','Young']],
+        ['Mouth_Slightly_Open',['Young','Smiling']],
+        ['Narrow_Eyes',        ['Male','Young','Smiling']],
+    ],
+
+
+'partial_big_causal_graph_6':[
+        ['Young',[]],
+        ['Male',[]],
+        ['Eyeglasses',['Young']],
+        ['Bald',            ['Male','Young']],
+        ['Mustache',        ['Male','Young']],
+        ['Smiling',         ['Young']],
+        ['Wearing_Lipstick',['Male','Young']],
+        ['Mouth_Slightly_Open',['Young','Smiling']],
+        ['Narrow_Eyes',        ['Male','Young','Smiling']],
+    ],
+
+
+'partial_big_causal_graph_7':[
+        ['Young',[]],
+        ['Male',[]],
+        ['Eyeglasses',['Young']],
+        ['Bald',            ['Male','Young']],
+        ['Mustache',        ['Male','Young']],
+        ['Smiling',         ['Male']],
+        ['Wearing_Lipstick',['Male','Young']],
+        ['Mouth_Slightly_Open',['Smiling']],
+        ['Narrow_Eyes',        ['Male','Young','Smiling']],
+    ],
+
+
+'partial_big_causal_graph_8':[
+        ['Young',[]],
+        ['Male',[]],
+        ['Eyeglasses',['Young']],
+        ['Bald',            ['Male','Young']],
+        ['Mustache',        ['Male','Young']],
+        ['Smiling',         ['Young']],
+        ['Wearing_Lipstick',['Male','Young']],
+        ['Mouth_Slightly_Open',['Young']],
+        ['Narrow_Eyes',        ['Male','Young','Smiling']],
+    ],
+
 'complete_minimal_graph':[
         ['Young',[]],
         ['Male',['Young']],
@@ -340,4 +439,3 @@ def get_causal_graph(causal_model=None,*args,**kwargs):
 
     else:
         return causal_graphs[causal_model]
-

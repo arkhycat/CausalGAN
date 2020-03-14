@@ -49,6 +49,8 @@ def calc_tvd(label_dict,attr):
     tvd=0.5*diff.abs().sum()
     return tvd
 
+def calc_kl(lab_ct, true_ct):
+    return (true_ct*np.log(true_ct/lab_ct)).sum().sum()
 
 def crosstab(model,result_dir=None,report_tvd=True,no_save=False,N=500000):
     '''
@@ -124,6 +126,8 @@ def crosstab(model,result_dir=None,report_tvd=True,no_save=False,N=500000):
 
             lab_f.write('  mean='+str(np.mean(lab_marg))+'\t'+\
                         'true mean='+str(true_marg)+'\n')
+            lab_f.write('  count='+str(np.sum(lab_marg))+'\t'+\
+                        'true count='+str(np.sum((attr[name]>0.5).values))+'\n')
 
             lab_f.write('\n')
 
@@ -132,7 +136,7 @@ def crosstab(model,result_dir=None,report_tvd=True,no_save=False,N=500000):
         lab_f.write('\nPairwise:\n')
 
         for node1,node2 in combinations(joint.keys(),r=2):
-
+            #print(node1, node2)
             lab_node1=(joint[node1]['g_fake_label']>0.5).astype('int')
             lab_node2=(joint[node2]['g_fake_label']>0.5).astype('int')
             lab_df=pd.DataFrame(data=np.hstack([lab_node1,lab_node2]),columns=[node1,node2])
@@ -146,18 +150,42 @@ def crosstab(model,result_dir=None,report_tvd=True,no_save=False,N=500000):
             lab_f.write( lab_ct.__repr__() )
             lab_f.write('\n\tReal:\n')
             lab_f.write( true_ct.__repr__() )
-
+            lab_f.write('\n\tKL-divergence: '+str(calc_kl(lab_ct, true_ct)))
             lab_f.write('\n\n')
+
+        #Pairs of labels
+        lab_f.write('\nParents:\n')
+
+        for node, parents in zip(model.cc.node_names, model.cc.parent_names):
+            if len(parents) > 0:
+                print(node, parents)
+                lab_nodes = [(joint[node]['g_fake_label']>0.5).astype('int')]
+                for p in parents:
+                    lab_nodes.append((joint[p]['g_fake_label']>0.5).astype('int'))
+
+                lab_df=pd.DataFrame(data=np.hstack(lab_nodes),columns=[node]+parents)
+                #print([node]+parents)
+                #print([lab_df[p] for p in parents])
+                #print([attr[p] for p in parents])
+
+                if len(parents) > 1:
+                    #print([node]+parents)
+                    #print(lab_df[node])
+                    #print([lab_df[p] for p in parents])
+                    lab_ct=pd.crosstab(index=lab_df[node],columns=[lab_df[p] for p in parents],normalize='all')
+                    true_ct=pd.crosstab(index=attr[node],columns=[attr[p] for p in parents],normalize='all')
+
+                else:
+                    lab_ct=pd.crosstab(index=lab_df[node],columns=lab_df[parents[0]],margins=True,normalize=True)
+                    true_ct=pd.crosstab(index=attr[node],columns=attr[parents[0]],margins=True,normalize=True)
+
+                lab_f.write('\n\tFake:\n')
+                lab_ct.to_csv(lab_xtab_fn,mode='a')
+                lab_f.write( lab_ct.__repr__() )
+                lab_f.write('\n\tReal:\n')
+                lab_f.write( true_ct.__repr__() )
+                lab_f.write('\n\tKL-divergence: '+str(calc_kl(lab_ct, true_ct)))
+                lab_f.write('\n\n')
 
     print('calculating pairwise crosstabs and saving results took ',time.time()-t0,'sec')
     return result
-
-
-
-
-
-
-
-
-
-
